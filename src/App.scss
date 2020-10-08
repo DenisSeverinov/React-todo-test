@@ -1,0 +1,38 @@
+$black: rgb(54, 54, 54);
+$blue: #1a73e8;
+
+.App {
+  margin: 0 auto;
+	width: 400px;
+	background-color: #ccc;
+  border-radius: 15px;
+  user-select: none;
+  background-color: $black;
+
+  .title {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    padding: 20px 10px;
+    color: $blue;
+  }
+
+  .wrap-icon {
+    
+    &__toggle-all {
+      font-size: 30px;
+      margin-top: 5px;
+      width: 20%;
+      text-align: center;
+      color: #9c9c9c;
+      cursor: pointer;
+      transition: .3s;
+    }
+    &__toggle-all:hover {
+      transform: scale(1.2);
+    }
+    &__toggle-all_active {
+      color: white;
+    }
+  }
+}

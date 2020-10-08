@@ -1,0 +1,33 @@
+$blue: #1a73e8;
+
+.footer {
+  display: flex;
+  justify-content: space-around;
+  font-size: 12px;
+  font-weight: bold;
+  color: $blue;
+
+	.filter {
+		display: flex;
+    
+		.filter__link {
+      display: flex;
+      
+      align-items: center;
+      color: $blue;
+      text-decoration: none;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: .5s;
+
+      &.active {
+        color: white;
+        transform: scale(1.2);
+      }
+    }
+  }
+  
+  .footer__text {
+    cursor: pointer;
+  }
+}
