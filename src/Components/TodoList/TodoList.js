@@ -6,17 +6,17 @@ const TodoList = props => {
 
     return (
       <ul className='list'>
-        {props.tasks.map(task => {
-          return <TodoItem
-                    key={task.id} 
-                    task={task} 
-                    onChange={props.onChange} 
+        {props.tasks.map(task =>
+                  <TodoItem
+                    key={task.id}
+                    task={task}
+                    onChange={props.onChange}
                     onClick={props.onClick}
-                    onBlur={props.onBlur}
+                    handleEditTitle={props.handleEditTitle}
                   />
-        })}
+        )}
       </ul>
-    )  
+    )
 }
 
 export default TodoList
