@@ -3,41 +3,39 @@ import './App.scss';
 import TodoList from './Components/TodoList/TodoList'
 import TodoForm from './Components/TodoForm/TodoForm'
 import TodoFilter from './Components/TodoFilter/TodoFilter'
-import TodoSort from './Components/TodoSort/TodoSort'
+// import TodoPriority from './Components/TodoPriority/TodoPriority'
 import { Route } from 'react-router-dom'
 
 class App extends Component {
 
   state = {
-    tasks: [],
-    priority: '2'
+    tasks: []
   }
-  
-  onToggle = id => {
-    this.setState(prevState => {
-      return {tasks: prevState.tasks.map(task => {
-        if (task.id === id) {
-          task.completed = !task.completed;
-        }
-        return task;
-      })}
+
+  toggle = id => {
+    let tasks = this.state.tasks.map(task => {
+      if (task.id === id) {
+        task.completed = !task.completed;
+      }
+      return task;
     })
+    this.setState({tasks});
   }
 
   handelSubmit = () => {
-
-    if (this.inputRef.value.trim()) {
+    const input = document.querySelector('.form__text');
+    
+    if (input.value.trim()) {
 
       const newTodo = {
         id: this.generationId(),
-        title: this.inputRef.value,
-        completed: false,
-        priority: this.state.priority
+        title: input.value,
+        completed: false
       }
 
-      this.inputRef.value = '';
-
+      input.value = '';
       let tasks = this.state.tasks;
+         
       tasks.push(newTodo);
 
       this.setState({tasks});
@@ -45,80 +43,66 @@ class App extends Component {
   }
 
   onDelete = id => {
-    this.setState(prevState => {
-      return {tasks: prevState.tasks.filter(task => {
-        if (task.id !== id) {
-          return task;
-        } else {
-          return null
-        }
-      })}
+    let tasks = this.state.tasks.filter(task => {
+      if (task.id !== id) {
+        return task;
+      } else {
+        return null;
+      }
     })
+    this.setState({tasks});
   }
 
   handelKeyDown = e => {
     if (e.keyCode === 13) {
-      this.buttonRef.click();
+      document.querySelector('.form__button').click();
     }
   }
 
-  handleEditTitle = (text, id) => {
-    this.setState(prevState => {
-      return {tasks: prevState.tasks.map(task => {
-        if (task.id === id && text.trim() !== '') {
-          task.title = text;
-        } 
+  handelBlur = (text, id) => {
+    
+    let tasks = this.state.tasks.map(task => {
+
+      if (task.id === id && text.trim() !== '') {
+        task.title = text;
+      } 
+
+      return task;
+    })
+  
+    this.setState({tasks});
+  }
+
+  toggleAll = () => {
+    
+    let tasks = this.state.tasks;
+    if (tasks.find(task => !task.completed)) {
+
+    tasks = tasks.map(task => {
+      if (!task.completed) {
+        task.completed = !task.completed;
+      }
+
+      return task;
+    })
+  
+    } else {
+      tasks = tasks.map(task => {
+        if (task.completed) {
+          task.completed = !task.completed;
+        }
 
         return task;
-      })}
-    })
-  }
-
-  onToggleAll = () => {
-    if (this.state.tasks.find(task => !task.completed)) {
-      this.setState(prevState => {
-        return {tasks: prevState.tasks.map(task => {
-          if (!task.completed) {
-            task.completed = !task.completed;
-          }
-    
-          return task;
-        })}
       })
-    } else {
-      this.setState(prevState => {
-        return {tasks: prevState.tasks.map(task => {
-          if (task.completed) {
-            task.completed = !task.completed;
-          }
     
-          return task;
-        })}
-      })
     }
+    
+    this.setState({tasks});
   }
 
   clearCompletedTasks = () => {
     let tasks = this.state.tasks.filter(task => !task.completed);
     this.setState({tasks});
-  }
-
-  onChangeSelect = (e) => {
-    this.setState({
-      priority: e.target.value
-    })
-  }
-
-  handleButtonSortAscending = () => {
-    this.setState(prevState => {
-      return {tasks: prevState.tasks.sort((a, b) => a.priority - b.priority)}
-    }) 
-  }
-
-  handleButtonSortDescending = () => {
-    this.setState(prevState => {
-      return {tasks: prevState.tasks.sort((a, b) => b.priority - a.priority)}
-    })
   }
 
   generationId() {
@@ -127,15 +111,16 @@ class App extends Component {
 
   componentDidMount() {
    const tasks = JSON.parse(localStorage.getItem('tasks'));
-   this.setState({tasks: tasks || []});
+   this.setState({tasks});
   }
 
   componentDidUpdate() {
     localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
-    this.inputRef.focus()
+    document.querySelector('.form__text').focus();
   }
 
   render() {
+    console.log(this.state.tasks);
 
     const completedTasks = this.state.tasks.filter(task => task.completed);
     const activeTasks = this.state.tasks.filter(task => !task.completed);
@@ -145,76 +130,55 @@ class App extends Component {
     if (completedTasks.length !== 0) {
       classForIcon.push('wrap-icon__toggle-all_active');
     }
-
+    
     return (
       <div className="App">
         <h1 className='title'>TO DO LIST APP</h1>
-        <div className='container'>
-          {this.state.tasks.length ? 
-            (<div className='wrap-icon'>
-              <i 
-                className={classForIcon.join(' ')}
-                onClick={this.onToggleAll}
-              />
-            </div>)
+        <TodoForm 
+          onClick={this.handelSubmit}
+          onKeyDown={this.handelKeyDown}
+        />
+        {this.state.tasks.length ? 
+          (<div className='wrap-icon'>
+            <i 
+              className={classForIcon.join(' ')}
+              onClick={this.toggleAll}
+            />
+          </div>)
           : 
           null}
-          <TodoForm 
-            onClick={this.handelSubmit}
-            onKeyDown={this.handelKeyDown}
-            buttonRef={el => (this.buttonRef = el)}
-            inputRef={el => (this.inputRef = el)}
-            onChange={this.onChangeSelect}
-            value={this.state.priority}
-          />
-        </div>
+          
         <Route path='/' exact render={() => 
-          <>
-            <TodoList 
-              onChange={this.onToggle} 
-              onClick={this.onDelete}
-              handleEditTitle={this.handleEditTitle}
-              tasks={this.state.tasks} 
-            />
-            <TodoFilter 
-            tasks={this.state.tasks}
-            onClick={this.clearCompletedTasks}
-            />
-          </>
+          <TodoList 
+            onChange={this.toggle} 
+            onClick={this.onDelete}
+            onBlur={this.handelBlur}
+            tasks={this.state.tasks} 
+          />
         }/>
         <Route path='/active' render={() => 
-          <>
-            <TodoList 
-              onChange={this.onToggle} 
-              onClick={this.onDelete}
-              handleEditTitle={this.handleEditTitle}
-              tasks={activeTasks} 
-            />
-            <TodoFilter 
-              tasks={activeTasks}
-              onClick={this.clearCompletedTasks}
-            />
-          </>
+          <TodoList 
+            onChange={this.toggle} 
+            onClick={this.onDelete}
+            onBlur={this.onBlurHandler}
+            tasks={activeTasks} 
+          />
         }/>
         <Route path='/done' render={() => 
-          <>
-            <TodoList 
-              onChange={this.onToggle} 
-              onClick={this.onDelete}
-              handleEditTitle={this.handleEditTitle}
-              tasks={completedTasks} 
-            />
-            <TodoFilter 
-              tasks={completedTasks}
-              onClick={this.clearCompletedTasks}
-            />
-          </>
+          <TodoList 
+            onChange={this.toggle} 
+            onClick={this.onDelete}
+            onBlur={this.onBlurHandler}
+            tasks={completedTasks} 
+          />
         }/>
-        <TodoSort 
-          handleButtonSortAscending={this.handleButtonSortAscending}
-          handleButtonSortDescending={this.handleButtonSortDescending}
-        />    
-      </div>    
+        {/* <TodoPriority /> */}
+        <TodoFilter 
+          tasks={this.state.tasks}
+          onClick={this.clearCompletedTasks}
+        />
+
+      </div>
     );
   } 
   

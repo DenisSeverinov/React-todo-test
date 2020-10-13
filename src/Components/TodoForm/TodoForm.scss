@@ -1,13 +1,17 @@
+$blue: #1a73e8;
+
 .form {
 	width: 90%;
   display: flex;
+  margin: 0 auto;
 	height: 4vh;
 	
+	
 	&__button {
-    width: 30%;
+    width: 25%;
     border-radius: 5px 0 0 5px ;
     cursor: pointer;
-    background-color: #1a73e8;
+    background-color: $blue;
     color: white;
     border: none;
 	}
@@ -16,9 +20,9 @@
 		width: 80%;
     outline: none;
     padding: 0 10px;
+    border-radius: 0 5px 5px 0;	
     border: none;
-    
-  }
+	}
 }
 
 

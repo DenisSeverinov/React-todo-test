@@ -6,15 +6,15 @@ const TodoList = props => {
 
     return (
       <ul className='list'>
-        {props.tasks.map(task => 
-                  <TodoItem
+        {props.tasks.map(task => {
+          return <TodoItem
                     key={task.id} 
                     task={task} 
                     onChange={props.onChange} 
                     onClick={props.onClick}
-                    handleEditTitle={props.handleEditTitle}
+                    onBlur={props.onBlur}
                   />
-        )}
+        })}
       </ul>
     )  
 }
