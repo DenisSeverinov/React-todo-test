@@ -1,13 +1,13 @@
 .item {
   box-sizing: border-box;
   width: 100%;
-
 	display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
   color: white;
   word-wrap: break-word;
+
   .item__text {
     max-width: 70%;
   }
@@ -38,16 +38,28 @@
 }
 .wrap {
   display: flex;
-  justify-content: center;
-
+  justify-content: flex-end;
+  margin: 0 15px 0 15px;
+  
   &__input {
     box-sizing: border-box;
     padding: 10px 15px;
     margin: 0;
+    border-radius: 5px;
     border: 1px solid #ccc;
     outline: none;
-    width: 80%;
+    width: 90%;
   }
+}
+
+.item.high {
+  color: #E53935;;
+}
+.item.medium {
+  color: #F9A825;
+}
+.item.low {
+  color: #43A047;
 }
 
 

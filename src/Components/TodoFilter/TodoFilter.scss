@@ -1,11 +1,9 @@
-$blue: #1a73e8;
-
 .footer {
   display: flex;
   justify-content: space-around;
   font-size: 12px;
   font-weight: bold;
-  color: $blue;
+  color: #1a73e8;
 
 	.filter {
 		display: flex;
@@ -14,14 +12,14 @@ $blue: #1a73e8;
       display: flex;
       
       align-items: center;
-      color: $blue;
+      color: #1a73e8;
       text-decoration: none;
       margin: 0 5px;
       cursor: pointer;
       transition: .5s;
 
       &.active {
-        color: white;
+        color:#FFF;
         transform: scale(1.2);
       }
     }

@@ -1,0 +1,21 @@
+.wrap-sort {
+  display: flex;
+  justify-content: space-around;
+
+  &__button {
+    border: none;
+    color: #1a73e8;
+    padding: 0;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 0 10px 0;
+    transition: .3s;
+    outline: none;
+  }
+  
+  &__button:hover {
+    transform: scale(1.2);
+  }
+}
