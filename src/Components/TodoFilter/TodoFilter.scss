@@ -5,12 +5,11 @@
   font-weight: bold;
   color: #1a73e8;
 
-	.filter {
-		display: flex;
+  .filter {
+    display: flex;
 
-		.filter__link {
+    .filter__link {
       display: flex;
-
       align-items: center;
       color: #1a73e8;
       text-decoration: none;
@@ -25,7 +24,15 @@
     }
   }
 
-  .footer__text {
+  .footer__button {
+    border: none;
+    color: #1a73e8;
+    padding: 0;
     cursor: pointer;
+    background-color: transparent;
+    font-size: 12px;
+    font-weight: bold;
+    transition: .3s;
+    outline: none;
   }
 }

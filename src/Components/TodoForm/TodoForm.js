@@ -1,29 +1,49 @@
-import React from 'react'
+import React, { Component } from 'react'
 import './TodoForm.scss'
-import Select from '../UI/Select/Select'
+import PropTypes from 'prop-types'
+import Select from 'Components/UI/Select/Select'
 
-const TodoForm = props => {
-	return (
-		<div className='form'>
-			<button
-				className='form__button'
-        onClick={() => props.onClick()}
-        ref={props.buttonRef}
-			>
-				ADD
-			</button>
-			<input
-				className='form__text'
-        type='text'
-        placeholder='What needs to be done?'
-        onKeyDown={(e) => props.onKeyDown(e)}
-        ref={props.inputRef}
-			/>
+class TodoForm extends Component {
+  submitHandler = e => {
+    e.preventDefault()
+    if (this.props.inputValue.trim()) {
+      this.props.onCreate(this.props.inputValue)
+    }
+  }
 
-      <Select onChange={props.onChange} value={props.value}/>
-		</div>
-	)
+  handleInputChange = e => {
+    this.props.onChange(e.target.value);
+  }
+
+  render() {
+    return (
+      <form className='form' onSubmit={this.submitHandler}>
+        <button
+          className='form__button'
+          type='submit'
+        >
+          ADD
+        </button>
+        <input
+          className='form__text'
+          type='text'
+          value={this.props.inputValue}
+          onChange={this.handleInputChange}
+          placeholder='What needs to be done?'
+          autoFocus
+        />
+        <Select onBlur={this.props.onBlur} value={this.props.value} />
+      </form>
+    )
+  }
+}
+
+TodoForm.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  onCreate: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
+  inputValue: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 }
 
 export default TodoForm
-
