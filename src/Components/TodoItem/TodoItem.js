@@ -4,7 +4,7 @@ import './TodoItem.scss'
 
 class TodoItem extends Component {
   state = {
-    isEdit: false,
+    isEdit: false
   }
 
   getClassTask() {

@@ -14,7 +14,9 @@ const Select = props => (
   </select>
 )
 
-Select.propTypes = { value: PropTypes.string.isRequired,
-  onBlur: PropTypes.func.isRequired }
+Select.propTypes = {
+  value: PropTypes.string.isRequired,
+  onBlur: PropTypes.func.isRequired,
+}
 
 export default Select

@@ -17,9 +17,11 @@ const TodoList = props => (
   </ul>
 )
 
-TodoList.propTypes = { onClick: PropTypes.func.isRequired,
+TodoList.propTypes = {
+  onClick: PropTypes.func.isRequired,
   handleEditTitle: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  tasks: PropTypes.arrayOf(PropTypes.object).isRequired }
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+}
 
 export default TodoList

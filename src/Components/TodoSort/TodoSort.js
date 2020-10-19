@@ -9,7 +9,9 @@ const TodoSort = props => (
   </div>
 )
 
-TodoSort.propTypes = { handleButtonSortAscending: PropTypes.func.isRequired,
-  handleButtonSortDescending: PropTypes.func.isRequired }
+TodoSort.propTypes = {
+  handleButtonSortAscending: PropTypes.func.isRequired,
+  handleButtonSortDescending: PropTypes.func.isRequired,
+}
 
 export default TodoSort

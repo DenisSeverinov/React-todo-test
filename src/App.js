@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import './App.scss';
 import { Route } from 'react-router-dom'
-import TodoList from './Components/TodoList/TodoList'
-import TodoForm from './Components/TodoForm/TodoForm'
-import TodoFilter from './Components/TodoFilter/TodoFilter'
-import TodoSort from './Components/TodoSort/TodoSort'
+import TodoList from 'Components/TodoList/TodoList'
+import TodoForm from 'Components/TodoForm/TodoForm'
+import TodoFilter from 'Components/TodoFilter/TodoFilter'
+import TodoSort from 'Components/TodoSort/TodoSort'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
+  state = {
       tasks: [],
       priority: '2',
       inputValue: '',
-    }
   }
 
   componentDidMount() {
@@ -43,7 +40,7 @@ class App extends Component {
   handelSubmit = title => {
     this.setState(prevState => ({
       tasks: prevState.tasks.concat([{
-        id: this.generationId(),
+        id: this.generateId(),
         title,
         completed: false,
         priority: prevState.priority,
@@ -105,16 +102,18 @@ class App extends Component {
   }
 
   handleButtonSortAscending = () => {
-    this.setState(prevState => (
-      { tasks: prevState.tasks.sort((a, b) => a.priority - b.priority) }));
+    this.setState(prevState => ({
+      tasks: prevState.tasks.sort((a, b) => a.priority - b.priority),
+    }));
   }
 
   handleButtonSortDescending = () => {
-    this.setState(prevState => (
-      { tasks: prevState.tasks.sort((a, b) => b.priority - a.priority) }));
+    this.setState(prevState => ({
+      tasks: prevState.tasks.sort((a, b) => b.priority - a.priority),
+    }));
   }
 
-  generationId = () => Math.random().toString(36).substr(2, 9);
+  generateId = () => Math.random().toString(36).substr(2, 9);
 
   render() {
     const completedTasks = this.state.tasks.filter(task => task.completed);
