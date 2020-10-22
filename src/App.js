@@ -1,123 +1,34 @@
 import React, { Component } from 'react';
-import './App.scss';
+import PropTypes from 'prop-types'
 import { Route } from 'react-router-dom'
+import { connect } from 'react-redux'
 import TodoList from 'Components/TodoList/TodoList'
 import TodoForm from 'Components/TodoForm/TodoForm'
 import TodoFilter from 'Components/TodoFilter/TodoFilter'
 import TodoSort from 'Components/TodoSort/TodoSort'
+import {
+  addTodo, editInputValue,
+  deleteTodo, toggleCheckbox,
+  editTitle, toggleAllCheckbox,
+  deleteCompletedTasks, editTodo,
+  removeFocusSelect, sortAscending,
+  sortDescending, takeFromLocalStorage,
+} from 'store/actions/app'
+import './App.scss';
 
 class App extends Component {
-  state = {
-      tasks: [],
-      priority: '2',
-      inputValue: '',
-  }
-
   componentDidMount() {
     const tasks = JSON.parse(localStorage.getItem('tasks'));
-    this.setState({ tasks: tasks || [] });
+    this.props.takeFromLocalStorage(tasks)
   }
 
   componentDidUpdate() {
-    localStorage.setItem('tasks', JSON.stringify(this.state.tasks));
+    localStorage.setItem('tasks', JSON.stringify(this.props.tasks));
   }
-
-  onToggle = id => {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.map(task => {
-        if (task.id === id) {
-          task.completed = !task.completed;
-        }
-        return task;
-      }),
-    }))
-  }
-
-  onChangeInputValue = value => {
-    this.setState({ inputValue: value })
-  }
-
-  handelSubmit = title => {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.concat([{
-        id: this.generateId(),
-        title,
-        completed: false,
-        priority: prevState.priority,
-      }]),
-      inputValue: '',
-    }))
-  }
-
-  onDelete = id => {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.filter(task => {
-        if (task.id !== id) {
-          return task;
-        }
-        return null;
-      }),
-    }))
-  }
-
-  handleEditTitle = (text, id) => {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.map(task => {
-        if (task.id === id && text.trim() !== '') {
-          task.title = text;
-        }
-        return task;
-      }),
-    }))
-  }
-
-  onToggleAll = () => {
-    if (this.state.tasks.find(task => !task.completed)) {
-      this.setState(prevState => ({
-        tasks: prevState.tasks.map(task => {
-          if (!task.completed) {
-            task.completed = !task.completed;
-          }
-          return task;
-        }),
-      }))
-    } else {
-      this.setState(prevState => ({
-        tasks: prevState.tasks.map(task => {
-          if (task.completed) {
-            task.completed = !task.completed;
-          }
-          return task;
-        }),
-      }))
-    }
-  }
-
-  clearCompletedTasks = () => {
-    this.setState(prevState => ({ tasks: prevState.tasks.filter(task => !task.completed) }));
-  }
-
-  onBlurSelect = e => {
-    this.setState({ priority: e.target.value });
-  }
-
-  handleButtonSortAscending = () => {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.sort((a, b) => a.priority - b.priority),
-    }));
-  }
-
-  handleButtonSortDescending = () => {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.sort((a, b) => b.priority - a.priority),
-    }));
-  }
-
-  generateId = () => Math.random().toString(36).substr(2, 9);
 
   render() {
-    const completedTasks = this.state.tasks.filter(task => task.completed);
-    const activeTasks = this.state.tasks.filter(task => !task.completed);
+    const completedTasks = this.props.tasks.filter(task => task.completed);
+    const activeTasks = this.props.tasks.filter(task => !task.completed);
 
     const classForIcon = ['wrap-icon__toggle-all', 'fas', 'fa-angle-down'];
 
@@ -129,22 +40,18 @@ class App extends Component {
       <div className='App'>
         <h1 className='title'>TO DO LIST APP</h1>
         <div className='container'>
-          {this.state.tasks.length
-            ? (
-              <div className='wrap-icon'>
-                <i
-                  className={classForIcon.join(' ')}
-                  onClick={this.onToggleAll}
-                />
-              </div>
-            )
-            : null}
+          <div className='wrap-icon'>
+            <i
+              className={classForIcon.join(' ')}
+              onClick={this.props.toggleAllCheckbox}
+            />
+          </div>
           <TodoForm
-            inputValue={this.state.inputValue}
-            onCreate={this.handelSubmit}
-            onChange={this.onChangeInputValue}
-            onBlur={this.onBlurSelect}
-            value={this.state.priority}
+            inputValue={this.props.inputValue}
+            addTodo={this.props.addTodo}
+            editInputValue={this.props.editInputValue}
+            removeFocusSelect={this.props.removeFocusSelect}
+            value={this.props.priority}
           />
         </div>
         <Route
@@ -153,14 +60,15 @@ class App extends Component {
           render={() => (
             <>
               <TodoList
-                onChange={this.onToggle}
-                onClick={this.onDelete}
-                handleEditTitle={this.handleEditTitle}
-                tasks={this.state.tasks}
+                toggleCheckbox={this.props.toggleCheckbox}
+                deleteTodo={this.props.deleteTodo}
+                editTodo={this.props.editTodo}
+                editTitle={this.props.editTitle}
+                tasks={this.props.tasks}
               />
               <TodoFilter
-                tasks={this.state.tasks}
-                onClick={this.clearCompletedTasks}
+                tasks={this.props.tasks}
+                deleteCompletedTasks={this.props.deleteCompletedTasks}
               />
             </>
           )}
@@ -170,14 +78,15 @@ class App extends Component {
           render={() => (
             <>
               <TodoList
-                onChange={this.onToggle}
-                onClick={this.onDelete}
-                handleEditTitle={this.handleEditTitle}
+                toggleCheckbox={this.props.toggleCheckbox}
+                deleteTodo={this.props.deleteTodo}
+                editTodo={this.props.editTodo}
+                editTitle={this.props.editTitle}
                 tasks={activeTasks}
               />
               <TodoFilter
                 tasks={activeTasks}
-                onClick={this.clearCompletedTasks}
+                deleteCompletedTasks={this.props.deleteCompletedTasks}
               />
             </>
           )}
@@ -187,25 +96,69 @@ class App extends Component {
           render={() => (
             <>
               <TodoList
-                onChange={this.onToggle}
-                onClick={this.onDelete}
-                handleEditTitle={this.handleEditTitle}
+                toggleCheckbox={this.props.toggleCheckbox}
+                deleteTodo={this.props.deleteTodo}
+                editTodo={this.props.editTodo}
+                editTitle={this.props.editTitle}
                 tasks={completedTasks}
               />
               <TodoFilter
                 tasks={completedTasks}
-                onClick={this.clearCompletedTasks}
+                deleteCompletedTasks={this.props.deleteCompletedTasks}
               />
             </>
           )}
         />
         <TodoSort
-          handleButtonSortAscending={this.handleButtonSortAscending}
-          handleButtonSortDescending={this.handleButtonSortDescending}
+          sortAscending={this.props.sortAscending}
+          sortDescending={this.props.sortDescending}
         />
       </div>
     );
   }
 }
 
-export default App;
+App.propTypes = {
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  inputValue: PropTypes.string.isRequired,
+  priority: PropTypes.string.isRequired,
+  addTodo: PropTypes.func.isRequired,
+  editInputValue: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  toggleCheckbox: PropTypes.func.isRequired,
+  editTitle: PropTypes.func.isRequired,
+  toggleAllCheckbox: PropTypes.func.isRequired,
+  deleteCompletedTasks: PropTypes.func.isRequired,
+  editTodo: PropTypes.func.isRequired,
+  removeFocusSelect: PropTypes.func.isRequired,
+  sortAscending: PropTypes.func.isRequired,
+  sortDescending: PropTypes.func.isRequired,
+  takeFromLocalStorage: PropTypes.func.isRequired,
+}
+
+function mapStatetoProps(state) {
+  return {
+    tasks: state.app.tasks,
+    priority: state.app.priority,
+    inputValue: state.app.inputValue,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addTodo: title => dispatch(addTodo(title)),
+    editInputValue: value => dispatch(editInputValue(value)),
+    deleteTodo: id => dispatch(deleteTodo(id)),
+    toggleCheckbox: id => dispatch(toggleCheckbox(id)),
+    editTitle: (title, id) => dispatch(editTitle(title, id)),
+    toggleAllCheckbox: () => dispatch(toggleAllCheckbox()),
+    deleteCompletedTasks: () => dispatch(deleteCompletedTasks()),
+    editTodo: id => dispatch(editTodo(id)),
+    removeFocusSelect: e => dispatch(removeFocusSelect(e)),
+    sortAscending: () => dispatch(sortAscending()),
+    sortDescending: () => dispatch(sortDescending()),
+    takeFromLocalStorage: tasks => dispatch(takeFromLocalStorage(tasks)),
+  }
+}
+
+export default connect(mapStatetoProps, mapDispatchToProps)(App);

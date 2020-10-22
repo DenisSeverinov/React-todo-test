@@ -3,10 +3,6 @@ import PropTypes from 'prop-types'
 import './TodoItem.scss'
 
 class TodoItem extends Component {
-  state = {
-    isEdit: false
-  }
-
   getClassTask() {
     const classesForTask = ['item'];
 
@@ -38,33 +34,32 @@ class TodoItem extends Component {
     return classesForIcon.join(' ');
   }
 
-  handleEdit = () => {
-    this.setState(prevState => ({ isEdit: !prevState.isEdit }));
-  }
-
   handleClickKeyDown = e => {
     if (e.keyCode === 13) {
-      this.props.handleEditTitle(e.target.value, this.props.task.id);
-      this.setState(prevState => ({ isEdit: !prevState.isEdit }));
+      this.props.editTitle(e.target.value, this.props.task.id);
+      this.handleIsEdit()
     }
   }
 
+  handleIsEdit = () => {
+    this.props.editTodo(this.props.task.id)
+  }
+
   onChangeCheckbox = () => {
-    this.props.onChange(this.props.task.id)
+    this.props.toggleCheckbox(this.props.task.id)
   }
 
   handleDelete = () => {
-    this.props.onClick(this.props.task.id)
+    this.props.deleteTodo(this.props.task.id)
   }
 
   render() {
-    return (this.state.isEdit
+    return (this.props.task.isEdit
       ? (
         <div className='wrap'>
           <input
             className='wrap__input'
             type='text'
-            ref={this.inputRef}
             defaultValue={this.props.task.title}
             onKeyDown={this.handleClickKeyDown}
             autoFocus
@@ -86,7 +81,7 @@ class TodoItem extends Component {
           </label>
           <span
             className='item__text'
-            onDoubleClick={this.handleEdit}
+            onDoubleClick={this.handleIsEdit}
           >
             {this.props.task.title}
           </span>
@@ -101,11 +96,13 @@ class TodoItem extends Component {
 }
 
 TodoItem.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  handleEditTitle: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  editTodo: PropTypes.func.isRequired,
+  editTitle: PropTypes.func.isRequired,
+  toggleCheckbox: PropTypes.func.isRequired,
   task: PropTypes.shape({
     completed: PropTypes.bool,
+    isEdit: PropTypes.bool,
     id: PropTypes.string,
     title: PropTypes.string,
     priority: PropTypes.string,

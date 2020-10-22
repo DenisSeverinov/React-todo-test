@@ -9,18 +9,20 @@ const TodoList = props => (
       <TodoItem
         key={task.id}
         task={task}
-        onChange={props.onChange}
-        onClick={props.onClick}
-        handleEditTitle={props.handleEditTitle}
+        toggleCheckbox={props.toggleCheckbox}
+        deleteTodo={props.deleteTodo}
+        editTodo={props.editTodo}
+        editTitle={props.editTitle}
       />
     )) }
   </ul>
 )
 
 TodoList.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  handleEditTitle: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  editTodo: PropTypes.func.isRequired,
+  editTitle: PropTypes.func.isRequired,
+  toggleCheckbox: PropTypes.func.isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 

@@ -14,7 +14,7 @@ const TodoFilter = props => (
       <NavLink className='filter__link' to='/active'>Active</NavLink>
       <NavLink className='filter__link' to='/done'>Completed</NavLink>
     </nav>
-    <button className='footer__button' type='button' onClick={() => props.onClick()}>
+    <button className='footer__button' type='button' onClick={props.deleteCompletedTasks}>
       Clear completed
     </button>
   </div>
@@ -22,7 +22,7 @@ const TodoFilter = props => (
 
 TodoFilter.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onClick: PropTypes.func.isRequired,
+  deleteCompletedTasks: PropTypes.func.isRequired,
 }
 
 export default TodoFilter

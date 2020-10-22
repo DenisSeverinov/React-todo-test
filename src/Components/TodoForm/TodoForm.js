@@ -4,20 +4,20 @@ import PropTypes from 'prop-types'
 import Select from 'Components/UI/Select/Select'
 
 class TodoForm extends Component {
-  submitHandler = e => {
+  handleSubmit = e => {
     e.preventDefault()
     if (this.props.inputValue.trim()) {
-      this.props.onCreate(this.props.inputValue)
+      this.props.addTodo(this.props.inputValue)
     }
   }
 
   handleInputChange = e => {
-    this.props.onChange(e.target.value);
+    this.props.editInputValue(e.target.value);
   }
 
   render() {
     return (
-      <form className='form' onSubmit={this.submitHandler}>
+      <form className='form' onSubmit={this.handleSubmit}>
         <button
           className='form__button'
           type='submit'
@@ -32,16 +32,16 @@ class TodoForm extends Component {
           placeholder='What needs to be done?'
           autoFocus
         />
-        <Select onBlur={this.props.onBlur} value={this.props.value} />
+        <Select onBlur={this.props.removeFocusSelect} value={this.props.value} />
       </form>
     )
   }
 }
 
 TodoForm.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  onCreate: PropTypes.func.isRequired,
-  onBlur: PropTypes.func.isRequired,
+  editInputValue: PropTypes.func.isRequired,
+  addTodo: PropTypes.func.isRequired,
+  removeFocusSelect: PropTypes.func.isRequired,
   inputValue: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
 }
