@@ -7,10 +7,10 @@ import {
   SORT_DESCENDING, TAKE_FROM_LOCAL_STORAGE,
 } from './actionTypes'
 
-export function addTodo(title) {
+export function addTodo(title, id) {
   return {
     type: ADD_TODO,
-    payload: title,
+    payload: { title, id },
   }
 }
 export function editInputValue(value) {

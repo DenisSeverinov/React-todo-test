@@ -6,14 +6,7 @@ import TodoList from 'Components/TodoList/TodoList'
 import TodoForm from 'Components/TodoForm/TodoForm'
 import TodoFilter from 'Components/TodoFilter/TodoFilter'
 import TodoSort from 'Components/TodoSort/TodoSort'
-import {
-  addTodo, editInputValue,
-  deleteTodo, toggleCheckbox,
-  editTitle, toggleAllCheckbox,
-  deleteCompletedTasks, editTodo,
-  removeFocusSelect, sortAscending,
-  sortDescending, takeFromLocalStorage,
-} from 'store/actions/app'
+import { toggleAllCheckbox, takeFromLocalStorage } from 'store/actions/rootReducer'
 import './App.scss';
 
 class App extends Component {
@@ -48,9 +41,6 @@ class App extends Component {
           </div>
           <TodoForm
             inputValue={this.props.inputValue}
-            addTodo={this.props.addTodo}
-            editInputValue={this.props.editInputValue}
-            removeFocusSelect={this.props.removeFocusSelect}
             value={this.props.priority}
           />
         </div>
@@ -59,17 +49,8 @@ class App extends Component {
           exact
           render={() => (
             <>
-              <TodoList
-                toggleCheckbox={this.props.toggleCheckbox}
-                deleteTodo={this.props.deleteTodo}
-                editTodo={this.props.editTodo}
-                editTitle={this.props.editTitle}
-                tasks={this.props.tasks}
-              />
-              <TodoFilter
-                tasks={this.props.tasks}
-                deleteCompletedTasks={this.props.deleteCompletedTasks}
-              />
+              <TodoList tasks={this.props.tasks} />
+              <TodoFilter tasks={this.props.tasks} />
             </>
           )}
         />
@@ -77,17 +58,8 @@ class App extends Component {
           path='/active'
           render={() => (
             <>
-              <TodoList
-                toggleCheckbox={this.props.toggleCheckbox}
-                deleteTodo={this.props.deleteTodo}
-                editTodo={this.props.editTodo}
-                editTitle={this.props.editTitle}
-                tasks={activeTasks}
-              />
-              <TodoFilter
-                tasks={activeTasks}
-                deleteCompletedTasks={this.props.deleteCompletedTasks}
-              />
+              <TodoList tasks={activeTasks} />
+              <TodoFilter tasks={activeTasks} />
             </>
           )}
         />
@@ -95,24 +67,12 @@ class App extends Component {
           path='/done'
           render={() => (
             <>
-              <TodoList
-                toggleCheckbox={this.props.toggleCheckbox}
-                deleteTodo={this.props.deleteTodo}
-                editTodo={this.props.editTodo}
-                editTitle={this.props.editTitle}
-                tasks={completedTasks}
-              />
-              <TodoFilter
-                tasks={completedTasks}
-                deleteCompletedTasks={this.props.deleteCompletedTasks}
-              />
+              <TodoList tasks={completedTasks} />
+              <TodoFilter tasks={completedTasks} />
             </>
           )}
         />
-        <TodoSort
-          sortAscending={this.props.sortAscending}
-          sortDescending={this.props.sortDescending}
-        />
+        <TodoSort />
       </div>
     );
   }
@@ -122,41 +82,21 @@ App.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
   inputValue: PropTypes.string.isRequired,
   priority: PropTypes.string.isRequired,
-  addTodo: PropTypes.func.isRequired,
-  editInputValue: PropTypes.func.isRequired,
-  deleteTodo: PropTypes.func.isRequired,
-  toggleCheckbox: PropTypes.func.isRequired,
-  editTitle: PropTypes.func.isRequired,
   toggleAllCheckbox: PropTypes.func.isRequired,
-  deleteCompletedTasks: PropTypes.func.isRequired,
-  editTodo: PropTypes.func.isRequired,
-  removeFocusSelect: PropTypes.func.isRequired,
-  sortAscending: PropTypes.func.isRequired,
-  sortDescending: PropTypes.func.isRequired,
   takeFromLocalStorage: PropTypes.func.isRequired,
 }
 
 function mapStatetoProps(state) {
   return {
-    tasks: state.app.tasks,
-    priority: state.app.priority,
-    inputValue: state.app.inputValue,
+    tasks: state.tasks,
+    priority: state.priority,
+    inputValue: state.inputValue,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addTodo: title => dispatch(addTodo(title)),
-    editInputValue: value => dispatch(editInputValue(value)),
-    deleteTodo: id => dispatch(deleteTodo(id)),
-    toggleCheckbox: id => dispatch(toggleCheckbox(id)),
-    editTitle: (title, id) => dispatch(editTitle(title, id)),
     toggleAllCheckbox: () => dispatch(toggleAllCheckbox()),
-    deleteCompletedTasks: () => dispatch(deleteCompletedTasks()),
-    editTodo: id => dispatch(editTodo(id)),
-    removeFocusSelect: e => dispatch(removeFocusSelect(e)),
-    sortAscending: () => dispatch(sortAscending()),
-    sortDescending: () => dispatch(sortDescending()),
     takeFromLocalStorage: tasks => dispatch(takeFromLocalStorage(tasks)),
   }
 }

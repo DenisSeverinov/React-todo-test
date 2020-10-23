@@ -1,19 +1,23 @@
 import React, { Component } from 'react'
 import './TodoForm.scss'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { addTodo, editInputValue, removeFocusSelect } from 'store/actions/rootReducer'
 import Select from 'Components/UI/Select/Select'
 
 class TodoForm extends Component {
   handleSubmit = e => {
     e.preventDefault()
     if (this.props.inputValue.trim()) {
-      this.props.addTodo(this.props.inputValue)
+      this.props.addTodo(this.props.inputValue, this.generateId())
     }
   }
 
   handleInputChange = e => {
     this.props.editInputValue(e.target.value);
   }
+
+  generateId = () => Math.random().toString(36).substr(2, 9);
 
   render() {
     return (
@@ -46,4 +50,12 @@ TodoForm.propTypes = {
   value: PropTypes.string.isRequired,
 }
 
-export default TodoForm
+function mapDispatchToProps(dispatch) {
+  return {
+    addTodo: (title, id) => dispatch(addTodo(title, id)),
+    editInputValue: value => dispatch(editInputValue(value)),
+    removeFocusSelect: e => dispatch(removeFocusSelect(e)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(TodoForm)

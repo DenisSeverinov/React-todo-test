@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import {
+  editTodo, toggleCheckbox,
+  deleteTodo, editTitle,
+} from 'store/actions/rootReducer'
 import './TodoItem.scss'
 
 class TodoItem extends Component {
@@ -109,4 +114,13 @@ TodoItem.propTypes = {
   }).isRequired,
 }
 
-export default TodoItem
+function mapDispatchToProps(dispatch) {
+  return {
+    editTodo: id => dispatch(editTodo(id)),
+    toggleCheckbox: id => dispatch(toggleCheckbox(id)),
+    deleteTodo: id => dispatch(deleteTodo(id)),
+    editTitle: (title, id) => dispatch(editTitle(title, id)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(TodoItem)

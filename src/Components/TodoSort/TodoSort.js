@@ -1,5 +1,7 @@
 import React from 'react'
 import './TodoSort.scss'
+import { connect } from 'react-redux'
+import { sortAscending, sortDescending } from 'store/actions/rootReducer'
 import PropTypes from 'prop-types'
 
 const TodoSort = props => (
@@ -14,4 +16,11 @@ TodoSort.propTypes = {
   sortDescending: PropTypes.func.isRequired,
 }
 
-export default TodoSort
+function mapDispatchToProps(dispatch) {
+  return {
+    sortAscending: () => dispatch(sortAscending()),
+    sortDescending: () => dispatch(sortDescending()),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(TodoSort)

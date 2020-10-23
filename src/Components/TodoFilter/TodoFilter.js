@@ -1,6 +1,8 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { deleteCompletedTasks } from 'store/actions/rootReducer'
 import './TodoFilter.scss'
 
 const TodoFilter = props => (
@@ -25,4 +27,10 @@ TodoFilter.propTypes = {
   deleteCompletedTasks: PropTypes.func.isRequired,
 }
 
-export default TodoFilter
+function mapDispatchtoProps(dispatch) {
+  return {
+    deleteCompletedTasks: () => dispatch(deleteCompletedTasks()),
+  }
+}
+
+export default connect(null, mapDispatchtoProps)(TodoFilter)
