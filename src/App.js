@@ -8,6 +8,7 @@ import TodoFilter from 'Components/TodoFilter/TodoFilter'
 import TodoSort from 'Components/TodoSort/TodoSort'
 import { toggleAllCheckbox, takeFromLocalStorage } from 'store/actions/rootReducer'
 import './App.scss';
+import { getTasksSelector, getInputValueSelector, getPrioritySelector } from './selectors/selector';
 
 class App extends Component {
   componentDidMount() {
@@ -88,9 +89,9 @@ App.propTypes = {
 
 function mapStatetoProps(state) {
   return {
-    tasks: state.tasks,
-    priority: state.priority,
-    inputValue: state.inputValue,
+    tasks: getTasksSelector(state),
+    priority: getPrioritySelector(state),
+    inputValue: getInputValueSelector(state),
   }
 }
 
