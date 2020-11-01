@@ -1,19 +1,26 @@
-import React, { Component } from 'react'
+import React, { Dispatch } from 'react'
 import './TodoForm.scss'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { addTodo, editInputValue, removeFocusSelect } from 'store/actions/rootReducer'
 import Select from 'Components/UI/Select/Select'
 
-class TodoForm extends Component {
-  handleSubmit = e => {
+type TodoFormProps = {
+  inputValue: string,
+  value: string,
+  addTodo: (title: string, id: string) => void,
+  editInputValue: (value: string) => void,
+  removeFocusSelect: (e: React.FocusEvent) => void
+}
+
+class TodoForm extends React.Component<TodoFormProps> {
+  handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (this.props.inputValue.trim()) {
       this.props.addTodo(this.props.inputValue, this.generateId())
     }
   }
 
-  handleInputChange = e => {
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.props.editInputValue(e.target.value);
   }
 
@@ -42,19 +49,11 @@ class TodoForm extends Component {
   }
 }
 
-TodoForm.propTypes = {
-  editInputValue: PropTypes.func.isRequired,
-  addTodo: PropTypes.func.isRequired,
-  removeFocusSelect: PropTypes.func.isRequired,
-  inputValue: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-}
-
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<any>) {
   return {
-    addTodo: (title, id) => dispatch(addTodo(title, id)),
-    editInputValue: value => dispatch(editInputValue(value)),
-    removeFocusSelect: e => dispatch(removeFocusSelect(e)),
+    addTodo: (title: string, id: string) => dispatch(addTodo(title, id)),
+    editInputValue: (value: string) => dispatch(editInputValue(value)),
+    removeFocusSelect: (e: React.FocusEvent) => dispatch(removeFocusSelect(e)),
   }
 }
 

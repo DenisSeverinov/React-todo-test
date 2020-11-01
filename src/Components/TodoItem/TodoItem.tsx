@@ -1,13 +1,21 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Dispatch } from 'react'
 import { connect } from 'react-redux'
+import { Task } from 'interfaces/interfaces'
 import {
   editTodo, toggleCheckbox,
   deleteTodo, editTitle,
 } from 'store/actions/rootReducer'
 import './TodoItem.scss'
 
-class TodoItem extends Component {
+type TodoItemProps = {
+  task: Task,
+  editTodo: (id: string) => void,
+  toggleCheckbox: (id: string) => void,
+  deleteTodo: (id: string) => void,
+  editTitle: (title: string, id: string) => void,
+}
+
+class TodoItem extends React.Component<TodoItemProps> {
   getClassTask() {
     const classesForTask = ['item'];
 
@@ -39,9 +47,9 @@ class TodoItem extends Component {
     return classesForIcon.join(' ');
   }
 
-  handleClickKeyDown = e => {
-    if (e.keyCode === 13) {
-      this.props.editTitle(e.target.value, this.props.task.id);
+  handleClickKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      this.props.editTitle(e.currentTarget.value, this.props.task.id);
       this.handleIsEdit()
     }
   }
@@ -66,7 +74,7 @@ class TodoItem extends Component {
             className='wrap__input'
             type='text'
             defaultValue={this.props.task.title}
-            onKeyDown={this.handleClickKeyDown}
+            onKeyPress={this.handleClickKeyDown}
             autoFocus
           />
         </div>
@@ -75,12 +83,12 @@ class TodoItem extends Component {
         <li className={this.getClassTask()}>
           <label
             className={this.getClassIcon()}
-            htmlFor={this.props.task.id}
+            htmlFor={`${this.props.task.id}`}
           >
             <input
               className='item__checkbox'
               type='checkbox'
-              id={this.props.task.id}
+              id={`${this.props.task.id}`}
               onChange={this.onChangeCheckbox}
             />
           </label>
@@ -100,26 +108,12 @@ class TodoItem extends Component {
   }
 }
 
-TodoItem.propTypes = {
-  deleteTodo: PropTypes.func.isRequired,
-  editTodo: PropTypes.func.isRequired,
-  editTitle: PropTypes.func.isRequired,
-  toggleCheckbox: PropTypes.func.isRequired,
-  task: PropTypes.shape({
-    completed: PropTypes.bool,
-    isEdit: PropTypes.bool,
-    id: PropTypes.string,
-    title: PropTypes.string,
-    priority: PropTypes.string,
-  }).isRequired,
-}
-
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<any>) {
   return {
-    editTodo: id => dispatch(editTodo(id)),
-    toggleCheckbox: id => dispatch(toggleCheckbox(id)),
-    deleteTodo: id => dispatch(deleteTodo(id)),
-    editTitle: (title, id) => dispatch(editTitle(title, id)),
+    editTodo: (id: string) => dispatch(editTodo(id)),
+    toggleCheckbox: (id: string) => dispatch(toggleCheckbox(id)),
+    deleteTodo: (id: string) => dispatch(deleteTodo(id)),
+    editTitle: (title: string, id: string) => dispatch(editTitle(title, id)),
   }
 }
 

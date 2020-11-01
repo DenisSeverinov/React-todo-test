@@ -1,3 +1,5 @@
+import React from 'react'
+import { Task } from 'interfaces/interfaces'
 import {
   ADD_TODO, EDIT_INPUT_VALUE,
   DELETE_TODO, TOGGLE_CHECKBOX,
@@ -7,31 +9,31 @@ import {
   SORT_DESCENDING, TAKE_FROM_LOCAL_STORAGE,
 } from './actionTypes'
 
-export function addTodo(title, id) {
+export function addTodo(title: string, id: string) {
   return {
     type: ADD_TODO,
     payload: { title, id },
   }
 }
-export function editInputValue(value) {
+export function editInputValue(value: string) {
   return {
     type: EDIT_INPUT_VALUE,
     payload: value,
   }
 }
-export function deleteTodo(id) {
+export function deleteTodo(id: string) {
   return {
     type: DELETE_TODO,
     payload: id,
   }
 }
-export function toggleCheckbox(id) {
+export function toggleCheckbox(id: string) {
   return {
     type: TOGGLE_CHECKBOX,
     payload: id,
   }
 }
-export function editTitle(title, id) {
+export function editTitle(title: string, id: string) {
   return {
     type: EDIT_TITLE,
     payload: { title, id },
@@ -47,13 +49,13 @@ export function deleteCompletedTasks() {
     type: DELETE_COMPLETED_TASKS,
   }
 }
-export function editTodo(id) {
+export function editTodo(id: string) {
   return {
     type: EDIT_TODO,
     payload: id,
   }
 }
-export function removeFocusSelect(e) {
+export function removeFocusSelect(e: React.FocusEvent) {
   return {
     type: REMOVE_FOCUS_SELECT,
     payload: e,
@@ -69,7 +71,7 @@ export function sortDescending() {
     type: SORT_DESCENDING,
   }
 }
-export function takeFromLocalStorage(tasks) {
+export function takeFromLocalStorage(tasks: Task[]) {
   return {
     type: TAKE_FROM_LOCAL_STORAGE,
     payload: tasks,

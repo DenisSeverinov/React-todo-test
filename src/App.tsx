@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import React, { Dispatch } from 'react';
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import TodoList from 'Components/TodoList/TodoList'
@@ -8,11 +7,20 @@ import TodoFilter from 'Components/TodoFilter/TodoFilter'
 import TodoSort from 'Components/TodoSort/TodoSort'
 import { toggleAllCheckbox, takeFromLocalStorage } from 'store/actions/rootReducer'
 import './App.scss';
-import { getTasksSelector, getInputValueSelector, getPrioritySelector } from './selectors/selector';
+import { getTasksSelector, getInputValueSelector, getPrioritySelector } from 'selectors/selector';
+import { InitialState, Task } from 'interfaces/interfaces';
 
-class App extends Component {
+type AppProps = {
+  tasks: Task[]
+  priority: string,
+  inputValue: string,
+  toggleAllCheckbox: () => void,
+  takeFromLocalStorage: (tasks: Task[]) => void
+}
+
+class App extends React.Component<AppProps> {
   componentDidMount() {
-    const tasks = JSON.parse(localStorage.getItem('tasks'));
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     this.props.takeFromLocalStorage(tasks)
   }
 
@@ -79,15 +87,7 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  inputValue: PropTypes.string.isRequired,
-  priority: PropTypes.string.isRequired,
-  toggleAllCheckbox: PropTypes.func.isRequired,
-  takeFromLocalStorage: PropTypes.func.isRequired,
-}
-
-function mapStatetoProps(state) {
+function mapStatetoProps(state: InitialState) {
   return {
     tasks: getTasksSelector(state),
     priority: getPrioritySelector(state),
@@ -95,10 +95,10 @@ function mapStatetoProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<any>) {
   return {
     toggleAllCheckbox: () => dispatch(toggleAllCheckbox()),
-    takeFromLocalStorage: tasks => dispatch(takeFromLocalStorage(tasks)),
+    takeFromLocalStorage: (tasks: Task[]) => dispatch(takeFromLocalStorage(tasks)),
   }
 }
 

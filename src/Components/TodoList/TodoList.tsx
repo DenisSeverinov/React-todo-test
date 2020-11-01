@@ -1,9 +1,13 @@
 import React from 'react'
 import './TodoList.scss'
-import PropTypes from 'prop-types'
 import TodoItem from 'Components/TodoItem/TodoItem'
+import { Task } from 'interfaces/interfaces'
 
-const TodoList = props => (
+type TodoListProps ={
+  tasks: Task[]
+}
+
+const TodoList: React.FC<TodoListProps> = props => (
   <ul className='list'>
     { props.tasks.map(task => (
       <TodoItem
@@ -13,9 +17,5 @@ const TodoList = props => (
     )) }
   </ul>
 )
-
-TodoList.propTypes = {
-  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-}
 
 export default TodoList

@@ -6,14 +6,15 @@ import {
   REMOVE_FOCUS_SELECT, SORT_ASCENDING,
   SORT_DESCENDING, TAKE_FROM_LOCAL_STORAGE,
 } from 'store/actions/actionTypes'
+import { InitialState } from 'interfaces/interfaces'
 
-const initialState = {
+const initialState: InitialState = {
   tasks: [],
   priority: '2',
   inputValue: '',
 }
 
-export default function rootReducer(state = initialState, action) {
+export default function rootReducer(state = initialState, action: { type: string, payload: any }) {
   switch (action.type) {
     case ADD_TODO:
       return {
@@ -104,12 +105,12 @@ export default function rootReducer(state = initialState, action) {
     case SORT_ASCENDING:
       return {
         ...state,
-        tasks: [...state.tasks].sort((a, b) => a.priority - b.priority),
+        tasks: [...state.tasks].sort((a: any, b: any) => a.priority - b.priority),
       }
     case SORT_DESCENDING:
       return {
         ...state,
-        tasks: [...state.tasks].sort((a, b) => b.priority - a.priority),
+        tasks: [...state.tasks].sort((a: any, b: any) => b.priority - a.priority),
       }
     case TAKE_FROM_LOCAL_STORAGE:
       return {

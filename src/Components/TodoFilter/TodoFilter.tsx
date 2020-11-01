@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { Dispatch } from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import { deleteCompletedTasks } from 'store/actions/rootReducer'
 import './TodoFilter.scss'
+import { Task } from 'interfaces/interfaces'
 
-const TodoFilter = props => (
+type TodoFilterProps = {
+  tasks: Task[],
+  deleteCompletedTasks: () => void
+}
+
+const TodoFilter: React.FC<TodoFilterProps> = props => (
   <div className='footer'>
     <p className='footer__text'>
       {props.tasks.filter(task => !task.completed).length}
@@ -22,12 +27,7 @@ const TodoFilter = props => (
   </div>
 )
 
-TodoFilter.propTypes = {
-  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  deleteCompletedTasks: PropTypes.func.isRequired,
-}
-
-function mapDispatchtoProps(dispatch) {
+function mapDispatchtoProps(dispatch: Dispatch<any>) {
   return {
     deleteCompletedTasks: () => dispatch(deleteCompletedTasks()),
   }

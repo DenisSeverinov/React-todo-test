@@ -1,8 +1,12 @@
 import React from 'react'
 import './Select.scss'
-import PropTypes from 'prop-types'
 
-const Select = props => (
+type SelectProps = {
+  value: string,
+  onBlur: (e: React.FocusEvent) => void,
+}
+
+const Select: React.FC<SelectProps> = props => (
   <select
     className='select'
     defaultValue={props.value}
@@ -13,10 +17,5 @@ const Select = props => (
     <option className='select__item' value='1'>High</option>
   </select>
 )
-
-Select.propTypes = {
-  value: PropTypes.string.isRequired,
-  onBlur: PropTypes.func.isRequired,
-}
 
 export default Select
