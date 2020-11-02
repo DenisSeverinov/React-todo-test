@@ -6,9 +6,9 @@ import {
   REMOVE_FOCUS_SELECT, SORT_ASCENDING,
   SORT_DESCENDING, TAKE_FROM_LOCAL_STORAGE,
 } from 'store/actions/actionTypes'
-import { InitialState } from 'interfaces/interfaces'
+import { IInitialState } from 'interfaces/interfaces'
 
-const initialState: InitialState = {
+const initialState: IInitialState = {
   tasks: [],
   priority: '2',
   inputValue: '',

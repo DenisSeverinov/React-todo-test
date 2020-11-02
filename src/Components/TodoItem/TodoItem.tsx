@@ -1,6 +1,7 @@
-import React, { Dispatch } from 'react'
+import React from 'react'
+import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { Task } from 'interfaces/interfaces'
+import { ITask } from 'interfaces/interfaces'
 import {
   editTodo, toggleCheckbox,
   deleteTodo, editTitle,
@@ -8,7 +9,7 @@ import {
 import './TodoItem.scss'
 
 type TodoItemProps = {
-  task: Task,
+  task: ITask,
   editTodo: (id: string) => void,
   toggleCheckbox: (id: string) => void,
   deleteTodo: (id: string) => void,
@@ -108,7 +109,7 @@ class TodoItem extends React.Component<TodoItemProps> {
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<any>) {
+function mapDispatchToProps(dispatch: Dispatch) {
   return {
     editTodo: (id: string) => dispatch(editTodo(id)),
     toggleCheckbox: (id: string) => dispatch(toggleCheckbox(id)),

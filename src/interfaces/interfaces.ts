@@ -1,4 +1,4 @@
-export interface Task {
+export interface ITask {
   id: string,
   title: string,
   completed: boolean,
@@ -6,8 +6,8 @@ export interface Task {
   priority: string,
 }
 
-export interface InitialState {
-  tasks: Task[]
+export interface IInitialState {
+  tasks: ITask[]
   priority: string,
   inputValue: string,
 }

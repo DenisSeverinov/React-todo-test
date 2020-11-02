@@ -1,4 +1,5 @@
-import React, { Dispatch } from 'react'
+import React from 'react'
+import { Dispatch } from 'redux'
 import './TodoForm.scss'
 import { connect } from 'react-redux'
 import { addTodo, editInputValue, removeFocusSelect } from 'store/actions/rootReducer'
@@ -49,7 +50,7 @@ class TodoForm extends React.Component<TodoFormProps> {
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<any>) {
+function mapDispatchToProps(dispatch: Dispatch) {
   return {
     addTodo: (title: string, id: string) => dispatch(addTodo(title, id)),
     editInputValue: (value: string) => dispatch(editInputValue(value)),

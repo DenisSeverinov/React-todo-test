@@ -1,5 +1,5 @@
 import React from 'react'
-import { Task } from 'interfaces/interfaces'
+import { ITask } from 'interfaces/interfaces'
 import {
   ADD_TODO, EDIT_INPUT_VALUE,
   DELETE_TODO, TOGGLE_CHECKBOX,
@@ -71,7 +71,7 @@ export function sortDescending() {
     type: SORT_DESCENDING,
   }
 }
-export function takeFromLocalStorage(tasks: Task[]) {
+export function takeFromLocalStorage(tasks: ITask[]) {
   return {
     type: TAKE_FROM_LOCAL_STORAGE,
     payload: tasks,

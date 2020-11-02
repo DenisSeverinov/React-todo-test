@@ -6,7 +6,7 @@ type SelectProps = {
   onBlur: (e: React.FocusEvent) => void,
 }
 
-const Select: React.FC<SelectProps> = props => (
+const Select = (props: SelectProps) => (
   <select
     className='select'
     defaultValue={props.value}

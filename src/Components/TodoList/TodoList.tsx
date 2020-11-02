@@ -1,13 +1,13 @@
 import React from 'react'
 import './TodoList.scss'
 import TodoItem from 'Components/TodoItem/TodoItem'
-import { Task } from 'interfaces/interfaces'
+import { ITask } from 'interfaces/interfaces'
 
 type TodoListProps ={
-  tasks: Task[]
+  tasks: ITask[]
 }
 
-const TodoList: React.FC<TodoListProps> = props => (
+const TodoList = (props: TodoListProps) => (
   <ul className='list'>
     { props.tasks.map(task => (
       <TodoItem

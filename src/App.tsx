@@ -1,6 +1,7 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import TodoList from 'Components/TodoList/TodoList'
 import TodoForm from 'Components/TodoForm/TodoForm'
 import TodoFilter from 'Components/TodoFilter/TodoFilter'
@@ -8,14 +9,14 @@ import TodoSort from 'Components/TodoSort/TodoSort'
 import { toggleAllCheckbox, takeFromLocalStorage } from 'store/actions/rootReducer'
 import './App.scss';
 import { getTasksSelector, getInputValueSelector, getPrioritySelector } from 'selectors/selector';
-import { InitialState, Task } from 'interfaces/interfaces';
+import { IInitialState, ITask } from 'interfaces/interfaces';
 
 type AppProps = {
-  tasks: Task[]
+  tasks: ITask[]
   priority: string,
   inputValue: string,
   toggleAllCheckbox: () => void,
-  takeFromLocalStorage: (tasks: Task[]) => void
+  takeFromLocalStorage: (tasks: ITask[]) => void
 }
 
 class App extends React.Component<AppProps> {
@@ -87,7 +88,7 @@ class App extends React.Component<AppProps> {
   }
 }
 
-function mapStatetoProps(state: InitialState) {
+function mapStatetoProps(state: IInitialState) {
   return {
     tasks: getTasksSelector(state),
     priority: getPrioritySelector(state),
@@ -95,10 +96,10 @@ function mapStatetoProps(state: InitialState) {
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<any>) {
+function mapDispatchToProps(dispatch: Dispatch) {
   return {
     toggleAllCheckbox: () => dispatch(toggleAllCheckbox()),
-    takeFromLocalStorage: (tasks: Task[]) => dispatch(takeFromLocalStorage(tasks)),
+    takeFromLocalStorage: (tasks: ITask[]) => dispatch(takeFromLocalStorage(tasks)),
   }
 }
 
